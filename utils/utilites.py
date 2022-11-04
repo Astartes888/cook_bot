@@ -6,7 +6,7 @@ bot = telebot.TeleBot(TOKEN_BOT)
 
 def get_help_text():
     help_txt = None
-    with open(r'Utils/help.txt', 'r', encoding='utf-8') as file:
+    with open(r'utils/help.txt', 'r', encoding='utf-8') as file:
         help_txt = file.read()
     return help_txt
 
