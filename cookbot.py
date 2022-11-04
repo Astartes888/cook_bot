@@ -1,8 +1,7 @@
 from telebot import *
 import pars
-from conf import token_bot
+from utils.utilites import send_content, get_help_text, bot
 
-bot = telebot.TeleBot(token_bot)
 
 task_switcher = True
 
@@ -25,13 +24,7 @@ def refresh_search(message):
 	global task_switcher
 	task_switcher = True
 	bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIjkGMSDE06Xt7juqwr5bWnAS-4GDH0AAJ7BAACR_sJDEp5b1zC0IaRKQQ')
-	bot.send_message(message.chat.id, 'Бот создан чтобы упростить поиск рецептов блюд прямо в чате телеграмма, без всяких "копаний" в мобильном браузере.\nПринцип работы\
- простой - отправляете боту название блюда и он выдает список из рецептов, разделённый на 5 частей по 20-ть рецептов. Для просмотра\
- любого рецепта из списка - просто нажмите на кнопку "Посмотреть рецепт" под фото блюда. При выдаче списка рецептов внизу появляются кнопки:\n"1 - 5" - переходы\
- на следущий список результатов (до 20-ти на страницу);\n"Начать новый поиск" - после нажатия можно отправлять новое название блюда.\n\
-Стоит отметить то, что чем точнее будет Ваш запрос, тем точнее поиск выдаст результат. Выдача результатов ограничена до 100 рецептов за запрос,\
- т.к. дальнейшая точность результатов по запросу снижается (снижается релевантность).\n❗️В случае если Вы очистили чат от переписки с ботом, то\
- для стабильной работы бота рекомендуется через команду /new_search или /start (в меню команд) начинать новый поиск.')
+	bot.send_message(message.chat.id, get_help_text())
 
 @bot.message_handler(content_types=['text'])
 def search_text(message):											 
@@ -71,17 +64,7 @@ def search_text(message):
 		bot.send_sticker(message.chat.id, 'CAACAgIAAxkBAAIiSmMHOAxoovzTafB5ir0VbyjTTctjAAKDBAACR_sJDG8VW4WhLqTWKQQ')
 		bot.send_message(message.chat.id, "Ой! Что-то пошло не так, видимо сервер не отвечает.")
 
-# Функция отвечающая за выдачу результата поискового запроса.
-# The function responsible for issuing the result of the search query.
-def send_content(chat_id):
-	find_links = pars.get_links()
-	find_image = pars.get_photo_links()
-	for num, item in enumerate(zip(find_links.values(), find_image)):
-		keyboard = types.InlineKeyboardMarkup()
-		recipe_button = types.InlineKeyboardButton(text="Посмотреть рецепт", callback_data=str(num))
-		keyboard.add(recipe_button)
-		bot.send_photo(chat_id, item[1], caption=item[0][0], protect_content=True, reply_markup=keyboard)
-		bot.send_chat_action(chat_id, 'typing')
+
 
 # Декоратор обработчика callback запросов с функцией, выдающая нам полный текст рецепта.
 # Callback query handler deсorator with a function that gives us the full text of the recipe.

@@ -63,11 +63,6 @@ def search_status():
         status = 'not found'
         return status
 
-# Общее количество найденых рецептов.
-# Parse the total number of found recipes. 
-def get_total(): 
-    return soup.find('div', {'class': 'total'}).string 
-
 # Парсим ссылки на фото блюд.
 # Parse the photo of the dish.
 def get_photo_links():
