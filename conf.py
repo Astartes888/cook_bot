@@ -1,2 +1,2 @@
 # Your bot token must be there
-token_bot = ''
+TOKEN_BOT = ''
